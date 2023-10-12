@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const { isEmail } = require("validator");
 const uniqueValidator = require("mongoose-unique-validator");
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new Schema({
   name: {
@@ -55,6 +56,24 @@ const userSchema = new Schema({
 userSchema.plugin(uniqueValidator, {
   message: "{PATH} has been already in use.",
 });
+
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  this.username = this.username.replace(/ /g, "");
+});
+
+userSchema.methods.createJWT = function () {
+  return jwt.sign({ userId: this._id }, process.env.SECRECT_TOKEN, {
+    expiresIn: process.env.TOKEN_EXPIREY,
+  });
+};
+
+userSchema.methods.comaprePassword = async function (userPassword) {
+  const isMatch = await bcrypt.compare(userPassword, this.password);
+  return isMatch;
+};
 
 
 
