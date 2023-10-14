@@ -3,6 +3,7 @@ import "./SignUp.css";
 import { FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AiOutlineFileImage } from "react-icons/ai";
+import { registerUser } from "../api/user";
 
 import { RotatingLines } from "react-loader-spinner";
 
@@ -23,8 +24,7 @@ const Signup = () => {
     form.append("password", data.password);
     form.append("rePassword", data.rePassword);
     form.append("email", data.email);
-    form.append("prof_pic", data.prof_pic);
-    form.append("confirm_success_url", "-");
+    registerUser(form).then(() => setLoading(false));
   };
 
   return (
