@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const Connection = require("./db");
+const cors = require("cors");
 require("express-async-errors");
 
 const userRouter = require("./router/user");
@@ -11,6 +12,13 @@ const errorHandlerMiddleware = require("./middlewares/error-handler");
 const port = process.env.PORT || 8000;
 
 const app = express();
+
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 
 app.use(express.json());
 app.use("/users", userRouter);

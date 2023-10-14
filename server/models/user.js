@@ -27,7 +27,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    minlength: [2, "password is too short"],
+    minlength: [4, "password is too short"],
   },
   prof_pic: {
     public_id: {
