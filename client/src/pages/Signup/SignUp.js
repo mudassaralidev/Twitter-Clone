@@ -3,9 +3,10 @@ import "./SignUp.css";
 import { FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AiOutlineFileImage } from "react-icons/ai";
-import { registerUser } from "../api/user";
+import { registerUser } from "../../api/user";
 
 import { RotatingLines } from "react-loader-spinner";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [data, setData] = useState({});
@@ -17,6 +18,29 @@ const Signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { name, username, email, password, rePassword } = data;
+
+    if (!username || !name || !email || !password || !rePassword) {
+      toast.error(" Please fill out required fields", {
+        autoClose: 2000
+      });
+      return
+    }
+
+    if (password !== rePassword) {
+      toast.error("Password does not match", {
+        autoClose: 2000
+      });
+      return
+    }
+
+    if (password.length <= 4) {
+      toast.warning("Password is too short, please use a strong password", {
+        autoClose: 2000
+      });
+      return
+    }
+
     setLoading(true);
     const form = new FormData();
     form.append("name", data.name);
@@ -24,8 +48,13 @@ const Signup = () => {
     form.append("password", data.password);
     form.append("rePassword", data.rePassword);
     form.append("email", data.email);
-    registerUser(form).then(() => setLoading(false));
+    registerUser(data).then(() => setLoading(false));
   };
+
+  const disabledButton = () => {
+    const { name, username, email, password, rePassword } = data;
+    return !username || !name || !email || !password || !rePassword || loading
+  }
 
   return (
     <div className="signup_container">
@@ -113,7 +142,7 @@ const Signup = () => {
                 accept="image/*"
               />
             </div>
-            <button type="submit" className="green_btn" disabled={loading}>
+            <button type="submit" className={disabledButton() ? "disabled" : "green_btn"} disabled={disabledButton()}>
               Sing Up
             </button>
           </form>
