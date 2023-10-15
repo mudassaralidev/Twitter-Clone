@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { FaTwitter } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
+import { logIn } from "../../api/user";
 
 const LogIn = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data)
+    const res = await logIn(data);
+    res === "success" && navigate("/home");
   };
 
   return (

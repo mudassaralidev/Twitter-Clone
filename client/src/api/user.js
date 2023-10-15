@@ -15,3 +15,20 @@ export const registerUser = async (data) => {
     });
   }
 };
+
+export const logIn = async (data) => {
+  try {
+    const res = await axios.post("/users/login", data, {
+      withCredentials: true,
+    });
+
+    toast.success(res.data, {
+      autoClose: 3000,
+    });
+    return "success";
+  } catch (error) {
+    toast.error(error.response.data.msg, {
+      autoClose: 5000,
+    });
+  }
+};
