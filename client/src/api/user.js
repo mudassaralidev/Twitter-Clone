@@ -32,3 +32,8 @@ export const logIn = async (data) => {
     });
   }
 };
+
+export const loggedInDetail = async (setLoggedIn) => {
+  const res = await axios.get("/users/loggedIn").then((res) => res.data);
+  setLoggedIn(res)
+};
