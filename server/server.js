@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const Connection = require("./db");
 const cors = require("cors");
+const cookie = require("cookie-parser");
 require("express-async-errors");
 
 const userRouter = require("./router/user");
@@ -13,6 +14,7 @@ const port = process.env.PORT || 8000;
 
 const app = express();
 
+app.use(cookie());
 app.use(
   cors({
     credentials: true,

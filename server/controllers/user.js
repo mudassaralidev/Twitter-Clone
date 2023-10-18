@@ -2,6 +2,14 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const badRequest = require("../middlewares/badRequestError");
 
+const settingCookies = (res, token, maxAge) => {
+  res.cookie("token", token, {
+    path: "/",
+    maxAge: maxAge ? 0 : 86400 * 1000,
+    http: true,
+    sameSite: "lax",
+  });
+};
 
 const signUp = async (req, res) => {
   const data = req.body;
@@ -37,12 +45,13 @@ const logIn = async (req, res) => {
     throw new badRequest("Email or password is incorrect");
   }
   const token = user.createJWT();
+  console.log(token)
   settingCookies(res, token, false);
   res.send("Successfully logged in");
 };
 
 const LoggedIn = (req, res) => {
-  const token = req.cookies.token;
+  const token = req?.cookies?.token;
   if (!token) return res.json(false);
   jwt.verify(token, process.env.SECRECT_TOKEN);
   res.send(true);
