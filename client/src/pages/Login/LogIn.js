@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { FaTwitter } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
-import { logIn } from "../../api/user";
+import { logIn, loggedInDetail } from "../../api/user";
+import { useDispatch } from "react-redux";
 
 const LogIn = () => {
+  const dispatch = useDispatch();
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -13,9 +16,11 @@ const LogIn = () => {
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await logIn(data);
+    await loggedInDetail(dispatch);
     res === "success" && navigate("/home");
   };
 

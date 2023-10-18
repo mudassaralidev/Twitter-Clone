@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { isLoggedIn } from "../features/user";
 
 export const registerUser = async (data) => {
   try {
@@ -33,7 +34,7 @@ export const logIn = async (data) => {
   }
 };
 
-export const loggedInDetail = async (setLoggedIn) => {
+export const loggedInDetail = async (dispatch) => {
   const res = await axios.get("/users/loggedIn").then((res) => res.data);
-  setLoggedIn(res)
+  dispatch(isLoggedIn(res));
 };

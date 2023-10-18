@@ -6,13 +6,19 @@ import { useEffect, useState } from "react";
 import { loggedInDetail } from "../api/user";
 import Sidebar from "../pages/Sidebar/Sidebar";
 import Home from "../pages/Home/Home";
+import { getLoggedInUserId } from "../features/user";
+import { useDispatch, useSelector } from "react-redux";
 
 const HandleRoutes = () => {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const dispatch = useDispatch();
+  const loggedIn = useSelector((state) => state.user.loggedIn);
 
   useEffect(() => {
-    loggedInDetail(setLoggedIn);
-  }, []);
+    loggedInDetail(dispatch);
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(getLoggedInUserId());
+  }, [dispatch, loggedIn]);
 
   return (
     <Router>
