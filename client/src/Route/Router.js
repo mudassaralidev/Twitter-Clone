@@ -11,14 +11,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 const HandleRoutes = () => {
   const dispatch = useDispatch();
-  const loggedIn = useSelector((state) => state.user.loggedIn);
+  const loggedIn = useSelector((state) => state?.user?.loggedIn);
 
   useEffect(() => {
     loggedInDetail(dispatch);
   }, [dispatch]);
+
   useEffect(() => {
     dispatch(getLoggedInUserId());
   }, [dispatch, loggedIn]);
+
+  console.log(loggedIn)
 
   return (
     <Router>
@@ -38,7 +41,7 @@ const HandleRoutes = () => {
               path="/"
               element={<Home />}
             />) : (<Route
-              path="/login"
+              path="/"
               element={<LogIn />}
             />)}
             <Route

@@ -35,6 +35,20 @@ export const logIn = async (data) => {
 };
 
 export const loggedInDetail = async (dispatch) => {
-  const res = await axios.get("/users/loggedIn").then((res) => res.data);
-  dispatch(isLoggedIn(res));
+  try {
+    const res = await axios.get("/users/loggedIn").then((res) => res.data);
+    dispatch(isLoggedIn(res));
+  } catch (err) {
+    dispatch(isLoggedIn(false));
+  }
+};
+
+export const logoutUser = async () => {
+  await axios.get("/users/logout", {
+    withCredentials: true,
+  });
+  window.location.href = "/";
+  toast.success("Log out successfully", {
+    autoClose: 3000,
+  });
 };

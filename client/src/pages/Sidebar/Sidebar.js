@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import SidebarOptions from "../components/SidebarOptions";
-import LogOut from "../components/LogOut";
-import TweetModal from "../components/TweetModal";
+import Logout from "../../components/Logout";
+// import TweetModal from "../components/TweetModal";
+import SidebarOptions from "../../components/SidebarOptions";
 
 import { CgProfile } from "react-icons/cg";
 import { AiFillHome } from "react-icons/ai";
@@ -68,7 +68,7 @@ export default function Sidebar({ active, setActive }) {
           </button>
         </Row>
         <Row>
-          <LogOut />
+          <Logout />
         </Row>
       </Container>
     </div>

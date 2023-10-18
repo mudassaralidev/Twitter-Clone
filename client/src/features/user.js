@@ -35,4 +35,5 @@ export const {
   getLoggedInUserId,
   fail,
 } = userSlice.actions;
+
 export default userSlice.reducer;
