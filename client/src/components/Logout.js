@@ -12,7 +12,7 @@ export default function Logout() {
     await loggedInDetail(dispatch);
   };
   return (
-    <button className="btn-secondary btn-lg bton mt-3" style={{ borderRadius: "25px !important" }} onClick={loggingOut}>
+    <button className="btn btn-secondary btn-lg mt-3" style={{ borderRadius: "25px !important" }} onClick={loggingOut}>
       Log Out
     </button>
   );

@@ -2,7 +2,7 @@ import Signup from "../pages/Signup/SignUp";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import LogIn from "../pages/Login/LogIn";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { loggedInDetail } from "../api/user";
 import Sidebar from "../pages/Sidebar/Sidebar";
 import Home from "../pages/Home/Home";
@@ -34,23 +34,22 @@ const HandleRoutes = () => {
               </div>
             </Col>
           )}
+          <Col lg={10} md={8} xs={9}>
+            <Routes>
+              {loggedIn === true ? (<Route
+                path="/"
+                element={<Home />}
+              />) : (<Route
+                path="/"
+                element={<LogIn />}
+              />)}
+              <Route
+                path="/signup"
+                element={<Signup />}
+              />
+            </Routes>
+          </Col>
         </Row>
-        <Col lg={10} md={8} xs={9}>
-          <Routes>
-            {loggedIn === true ? (<Route
-              path="/"
-              element={<Home />}
-            />) : (<Route
-              path="/"
-              element={<LogIn />}
-            />)}
-            <Route
-              path="/signup"
-              element={<Signup />}
-            />
-          </Routes>
-        </Col>
-
       </Container >
     </Router >
   );
