@@ -8,10 +8,12 @@ import Sidebar from "../pages/Sidebar/Sidebar";
 import Home from "../pages/Home/Home";
 import { getLoggedInUserId } from "../features/user";
 import { useDispatch, useSelector } from "react-redux";
+import { RotatingLines } from "react-loader-spinner";
 
 const HandleRoutes = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state?.user?.loggedIn);
+  const loading = useSelector((state) => state?.user?.loading);
 
   useEffect(() => {
     loggedInDetail(dispatch);
@@ -21,7 +23,15 @@ const HandleRoutes = () => {
     dispatch(getLoggedInUserId());
   }, [dispatch, loggedIn]);
 
-  console.log(loggedIn)
+  if (loading) {
+    return <RotatingLines
+      strokeColor="grey"
+      strokeWidth="5"
+      animationDuration="0.75"
+      width="96"
+      visible={true}
+    />
+  }
 
   return (
     <Router>

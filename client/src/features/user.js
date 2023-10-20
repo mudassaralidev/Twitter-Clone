@@ -11,8 +11,8 @@ const userSlice = createSlice({
     loggedIn: false,
   },
   reducers: {
-    request: (state) => {
-      state.loading = true;
+    request: (state, action) => {
+      state.loading = action.payload;
     },
     getLoggedInUserId: (state) => {
       if (document.cookie !== "") {
