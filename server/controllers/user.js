@@ -1,6 +1,8 @@
 const User = require("../models/user");
+const Token = require("../models/token");
 const jwt = require("jsonwebtoken");
 const badRequest = require("../middlewares/badRequestError");
+const crypto = require("crypto");
 
 const settingCookies = (res, token, maxAge) => {
   res.cookie("token", token, {
@@ -62,9 +64,63 @@ const logOut = (req, res) => {
   res.send("logout");
 };
 
+const resetPasswordEmail = async (req, res) => {
+  const user = await User.findOne({
+    email: req.body.email,
+  });
+  if (!user) {
+    return res.send("User does not exist. Signup yourself");
+  }
+  if (user && !user.verfied) {
+    return res.send(
+      "Confirmation mail has been sent to your email. verify yourself"
+    );
+  } else {
+    const token = await Token.create({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    });
+    const url = `${process.env.BASE_URL}users/${user._id}/reset-password/${token.token}`;
+    const text = `<h2>Reset Your Password</h2> <p>by clicking on below link</p> <a href=${url}>Reset your password<a>`;
+    await sendEmail(user.email, "Reset Passwrod", text);
+    res.send("Check your email to reset password");
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { password, rePassword } = req.body;
+  if (!password || !rePassword) {
+    throw new badRequest("Please fill required fields");
+  }
+  if (password !== rePassword) {
+    throw new badRequest("Password does not match");
+  }
+  const user = await User.findOne({ _id: req.params.id });
+  if (user) {
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+    if (token) {
+      user.password = password || user.password;
+      await user.save();
+      await token.remove();
+      return res.send("Password changed successfully");
+    } else {
+      throw new badRequest(
+        "Link has been expired, get link by providing your email"
+      );
+    }
+  } else {
+    return res.send("Password can not be change");
+  }
+};
+
 module.exports = {
   signUp,
   LoggedIn,
   logIn,
   logOut,
+  resetPassword,
+  resetPasswordEmail
 };
