@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { loggedInDetail } from "../api/user";
 import Sidebar from "../pages/Sidebar/Sidebar";
 import Home from "../pages/Home/Home";
+import ResetPassword from "../pages/ResetPassword/ResetPasswordEmail";
+import ChangePassword from "../pages/ResetPassword/ResetPassword";
 import { getLoggedInUserId } from "../features/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RotatingLines } from "react-loader-spinner";
@@ -56,6 +58,14 @@ const HandleRoutes = () => {
               <Route
                 path="/signup"
                 element={<Signup />}
+              />
+              <Route
+                path="/users/:id/reset-password/:token"
+                element={<ChangePassword />}
+              />
+              <Route
+                path="/reset-password"
+                element={<ResetPassword />}
               />
             </Routes>
           </Col>
