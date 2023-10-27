@@ -55,3 +55,37 @@ export const logoutUser = async () => {
     autoClose: 3000,
   });
 };
+
+export const resetPasswordEmail = async (data) => {
+  try {
+    const res = await axios.post("/users/reset-password", data, {
+      withCredentials: true,
+    });
+    toast.success(res.data, {
+      autoClose: 3000,
+    });
+  } catch (error) {
+    toast.error(error.response.data.msg, {
+      autoClose: 5000,
+    });
+  }
+};
+
+export const resetPassword = async (id, token, data, navigate) => {
+  try {
+    await axios
+      .post(`/users/${id}/reset-password/${token}`, data, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        toast.success(res.data, {
+          autoClose: 3000,
+        });
+      });
+    navigate("/login");
+  } catch (error) {
+    toast.error(error.response.data.msg, {
+      autoClose: 5000,
+    });
+  }
+};
