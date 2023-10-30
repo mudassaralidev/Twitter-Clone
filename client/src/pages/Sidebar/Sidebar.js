@@ -14,10 +14,8 @@ import { CiCircleMore } from "react-icons/ci";
 
 import { Link } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
 
 export default function Sidebar({ active, setActive }) {
-  const [modalShow, setmodalshow] = useState(false);
   const sideOptions = [
     { id: 1, icon: <FaTwitter />, to: "/home", style: "side-bar-icon" },
     { id: 1, text: "Home", icon: <AiFillHome />, to: "/home" },
