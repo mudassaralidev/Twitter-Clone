@@ -116,11 +116,50 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { name, username, password, bio } = req.body;
+  if (!password) {
+    throw new badRequest("Enter your password to update record");
+  }
+  const user = await User.findOne({ _id: req.userId });
+  const correctPassword = await user.comaprePassword(password);
+  if (!correctPassword) {
+    throw new badRequest("Password does not match");
+  }
+  const imgId = user.prof_pic.public_id;
+
+  user.name = name || user.name;
+  user.username = username || user.username;
+  user.bio = bio;
+  user.prof_pic.public_id = req.file
+    ? req.file.filename
+    : user.prof_pic.public_id;
+  user.prof_pic.url = req.file ? req.file.path : user.prof_pic.url;
+  if (await user.save()) {
+    if (req.file) {
+      await deleteImage(imgId);
+      await uploadImage(req.file.path);
+    }
+    res.json({
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      followers: user.followers,
+      followings: user.followings,
+      prof_pic: user.prof_pic,
+      bio: user.bio,
+    });
+  } else {
+    throw new badRequest("something went wrong");
+  }
+};
+
 module.exports = {
   signUp,
   LoggedIn,
   logIn,
   logOut,
   resetPassword,
-  resetPasswordEmail
+  resetPasswordEmail,
+  updateUser
 };

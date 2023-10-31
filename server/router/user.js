@@ -5,7 +5,8 @@ const {
   logIn,
   logOut,
   resetPasswordEmail,
-  resetPassword
+  resetPassword,
+  updateUser
 } = require("../controllers/user");
 
 router.post("/signup", signUp);
@@ -14,5 +15,6 @@ router.get("/logout", logOut);
 router.get("/loggedIn", LoggedIn);
 router.post("/reset-password", resetPasswordEmail);
 router.post("/:id/reset-password/:token", resetPassword);
+router.patch("/updateprofile", updateUser);
 
 module.exports = router;
