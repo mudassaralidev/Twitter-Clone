@@ -11,6 +11,8 @@ import ChangePassword from "../pages/ResetPassword/ResetPassword";
 import { getLoggedInUserId } from "../features/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RotatingLines } from "react-loader-spinner";
+import Protected from "../Protected";
+import UnProtected from "../UnProtected";
 
 const HandleRoutes = () => {
   const dispatch = useDispatch();
@@ -48,24 +50,29 @@ const HandleRoutes = () => {
           )}
           <Col lg={10} md={8} xs={9}>
             <Routes>
-              {loggedIn === true ? (<Route
-                path="/"
-                element={<Home />}
-              />) : (<Route
-                path="/"
-                element={<LogIn />}
-              />)}
+              {loggedIn === true ? (
+                <Route path="/" element={<Protected component={<Home />} />} />
+              ) : (
+                <Route
+                  path="/"
+                  element={<UnProtected component={<LogIn />} />}
+                />
+              )}
               <Route
                 path="/signup"
-                element={<Signup />}
+                element={<UnProtected component={<Signup />} />}
+              />
+              <Route
+                path="/login"
+                element={<UnProtected component={<LogIn />} />}
               />
               <Route
                 path="/users/:id/reset-password/:token"
-                element={<ChangePassword />}
+                element={<UnProtected component={<ChangePassword />} />}
               />
               <Route
                 path="/reset-password"
-                element={<ResetPassword />}
+                element={<UnProtected component={<ResetPassword />} />}
               />
             </Routes>
           </Col>
